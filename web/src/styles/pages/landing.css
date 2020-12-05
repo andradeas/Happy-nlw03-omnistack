@@ -76,6 +76,27 @@
     transition: background-color 0.2s;
 }
 
+.content-wrapper .restrict-area {
+    position: absolute;
+    right: 50;
+    bottom: 50;
+
+    width: 80px;
+    height: 80px;
+    background: #ffd666;
+    border-radius: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background-color 0.2s;
+}
+
 .content-wrapper .enter-app:hover{
+    background: #96FEFF;
+}
+
+.content-wrapper .restrict-area:hover{
     background: #96FEFF;
 }
