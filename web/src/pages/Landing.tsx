@@ -27,7 +27,7 @@ function Landing(){
           </Link>
 
           <Link to="/orphanages/restrictArea" className="restrict-area">
-            <FiArrowRight size={26} color ="rgba(0, 0, 0, 0.6)"/>
+              Acesso Restrito
           </Link>
   
         </div>
