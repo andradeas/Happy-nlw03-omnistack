@@ -16,6 +16,13 @@ interface Orphanage {
     name: string;
     latitude: number;
     longitude: number;
+}
+
+export interface IUser {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
   }
 
 function OrphanagesMap() {

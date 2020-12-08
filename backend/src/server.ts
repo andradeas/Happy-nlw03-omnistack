@@ -16,12 +16,6 @@ app.use(routes);
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 app.use(errorHandler);
 
-//rota = conjunto 
-//recurso = usuário
-//métodos HTTP = GET, POST, PUT, DELETE
-//Parâmetros 
-
-
 
 app.listen(3333);
 

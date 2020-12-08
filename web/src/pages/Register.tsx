@@ -1,32 +1,84 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-
 import { FiArrowLeft } from 'react-icons/fi'
+import api from '../services/api';
+import { useHistory } from "react-router-dom";
+import { IUser } from './OrphanagesMap';
+import logoImg from '../images/logo-2.svg';
 
-import { useAuth } from '../contexts/auth'
+import '../styles/pages/register.css';
 
-import logoImg from '../images/logo-2.svg'
+interface IData {
+    [key: string]: any;
+}
 
-import '../styles/pages/register.css'
+export default function Register() {
 
-const Register: React.FC = () => {
-    const { register } = useAuth()
+    const [getUser, setUser] = useState<IUser>();
+    const [getName, setName] = useState('');
+    const [getEmail, setEmail] = useState('');
+    const [getPassword, setPassword] =useState('');
 
-    const [name, setName] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    //const [disabled, setDisabled] = useState<boolean>(true)
 
-    const [disabled, setDisabled] = useState<boolean>(true)
+    const history = useHistory();
 
-    useEffect(() => {
-        setDisabled(!email || !password)
-    }, [email, password])
+    /* useEffect(() => {
+        setDisabled(!getEmail || !getPassword)
+    }, [getEmail, getPassword]) */
 
     // TODO: Prevent register to be called multiple times
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+    async function handleSubmitRegister(event: FormEvent) {
+        
+        event.preventDefault();
+    
+        const data1: IData = {
+            name: getName,
+            email: getEmail,
+            password: getPassword,
+        }       
+    
+        try {
+    
+            await api.post('/users-create', data1);
+    
+            alert('Usuario cadastrado com sucesso!');
+            
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao cadastrar Usuário');
+        }
+    }
 
-        register({ name, email, password })
+    async function handleSubmitLogin(event: FormEvent) {
+        event.preventDefault();
+    
+        const data2: IData = {
+            email: getEmail,
+            password: getPassword,
+        }
+    
+        try {
+            const response = await api.post('/users', data2)
+    
+            alert('Usuario logado com sucesso!');
+            setUser({id:response.data.id,
+                name:response.data.name,
+                email:response.data.email,
+                password:response.data.password,
+            })
+            history.push({
+                pathname: '/orphanages',
+                state: { id:response.data.id,
+                    name:response.data.name,
+                    email:response.data.email,
+                    password:response.data.password,
+                }
+            });
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao logar Usuário');
+        }
     }
 
     return (
@@ -45,7 +97,7 @@ const Register: React.FC = () => {
                     <FiArrowLeft size={20} color='#15C3D6' />
                 </Link>
 
-                <form onSubmit={handleSubmit} className='register-form'>
+                <form className='register-form'>
                     <fieldset>
                         <legend>Cadastrar-se</legend>
 
@@ -73,5 +125,3 @@ const Register: React.FC = () => {
         </div>
     )
 }
-
-export default Register
