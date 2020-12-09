@@ -39,6 +39,28 @@
     font-weight: 800;
 }
 
+#page-map .logout{
+    position: relative;
+    right: -50px;
+    bottom: -50px;
+
+    z-index: 10;
+
+    width: 64px;
+    height: 64px;
+    background: #15c3d6;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 0;
+    border: none;
+
+    transition: background-color 0.2s;
+}
+
 #page-map .leaflet-container{
     z-index: 5;
 }
@@ -58,6 +80,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
 
     transition: background-color 0.2s;
 }

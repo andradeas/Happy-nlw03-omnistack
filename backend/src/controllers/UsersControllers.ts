@@ -6,10 +6,6 @@ import * as Yup from 'yup';
 import userView from '../views/users_view';
 
 export default{
-    async login(request: Request, response: Response){
-        
-        return response.render('login');
-    },
     
     async show(request: Request, response: Response){
         const { email, password } = request.body;
@@ -50,6 +46,6 @@ export default{
     
         await usersRepository.save(user);
     
-        return response.status(201).json(user);
+        return response.status(200).json(user);
     } 
 }

@@ -18,14 +18,8 @@ interface Orphanage {
     longitude: number;
 }
 
-export interface IUser {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-  }
-
 function OrphanagesMap() {
+    const [logged, setLogged] = useState(false);
 
     const [orphanages, setOrphanages] = useState<Orphanage[]>([]);
 
@@ -33,7 +27,18 @@ function OrphanagesMap() {
         api.get('orphanages').then(response => {
             setOrphanages(response.data);
         });
-    }, []);
+        const name = localStorage.getItem('name');
+        if (name){
+            setLogged(true);
+        }
+    }, []);    
+
+    function Logout(){
+        localStorage.setItem('name', '');
+        localStorage.setItem('email', '');
+        window.location.href = "/";
+        //window.location.reload();
+    }
     return (
         <div id="page-map">
             <aside>
@@ -45,8 +50,9 @@ function OrphanagesMap() {
                 </header>
 
                 <footer>
-                    <strong>Jequie</strong>
-                    <span>Bahia</span>
+                    {
+                        logged ? (<button type="button" className="logout" onClick={Logout}> Sair</button>) : (<strong>Jequié - Bahia</strong>)
+                    }
                 </footer>
             </aside>
             
@@ -76,9 +82,10 @@ function OrphanagesMap() {
 
             </MapContainer>
             
-            <Link to="/orphanages/create" className="create-orphanage">
-                <FiPlus size={32} color="#FFF"/>
-            </Link>
+            {
+                logged ? (<Link to="/orphanages/create" className="create-orphanage">
+                <FiPlus size={32} color="#FFF"/></Link>) : (<Link to="/login" className="create-orphanage">Entrar</Link> )
+            }
         </div>
     )
 }

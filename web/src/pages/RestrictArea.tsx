@@ -1,39 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useHistory, useLocation } from 'react-router-dom'
-import { Location } from 'history'
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import api from "../services/api";
+import { FiArrowLeft } from 'react-icons/fi';
 
-import { FiArrowLeft } from 'react-icons/fi'
+import logoImg from '../images/logo-2.svg';
 
-import { useAuth } from '../contexts/auth'
-
-import logoImg from '../images/logo-2.svg'
-
-import '../styles/pages/restrict-area.css'
+import '../styles/pages/restrict-area.css';
 import Popup from "../components/Popup";
 
-const Login: React.FC = () => {
-    const { signIn } = useAuth()
 
-    const history = useHistory()
-    const location = useLocation<{ from: Location }>()
+export default function Login() {
 
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [remember, setRemember] = useState<boolean>(false)
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
-    const [disabled, setDisabled] = useState<boolean>(true)
+    async function Login(e){
+        e.preventDefault();
+        const response = await api.post("/sessions", { 
+           email, password
+        })
+        if (response.status === 200) {
+            localStorage.setItem("email", response.data.email);
+            localStorage.setItem("name", response.data.name);
 
-    useEffect(() => {
-        setDisabled(!email || !password)
-    }, [email, password])
+            window.location.href = "/app";
+        }else{
+            alert("Usuário não encontrado!");
+        }
 
-    // TODO: Prevent signIn to be called multiple times
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-
-        signIn({ email, password }, remember)
-            .then(() => history.push(location.state.from ?? { pathname: '/app' }))
     }
+
+    useEffect(()=>{
+        const name = localStorage.getItem("name");
+        if (name){
+            window.location.href = "/app";
+        }
+    },[])
 
     return (
         <div id='login'>
@@ -51,18 +53,18 @@ const Login: React.FC = () => {
                     <FiArrowLeft size={20} color='#15C3D6' />
                 </Link>
 
-                <form onSubmit={handleSubmit} className='login-form'>
+                <form className='login-form' onSubmit={Login}>
                     <fieldset>
                         <legend>Fazer login</legend>
 
                         <div className='input-block'>
                             <label htmlFor='email'>E-mail</label>
-                            <input id='email' name='email' autoComplete='email' maxLength={255} value={email} onChange={e => setEmail(e.target.value)} />
+                            <input id='email' name='email' autoComplete='email' maxLength={255} value={email} onChange={e => setEmail(e.target.value)} required />
                         </div>
 
                         <div className='input-block'>
                             <label htmlFor='about'>Senha</label>
-                            <input id='password' name='password' type='password' autoComplete='current-password' maxLength={255} value={password} onChange={e => setPassword(e.target.value)} />
+                            <input id='password' name='password' type='password' autoComplete='current-password' maxLength={255} value={password} onChange={e => setPassword(e.target.value)} required/>
                         </div>
 
                         <div className="input-group">
@@ -75,7 +77,7 @@ const Login: React.FC = () => {
                         </div>
                     </fieldset>
                     
-                    <button disabled={disabled} className='confirm-button' type='submit'>
+                    <button className='confirm-button' type='submit'>
                         Confirmar
                     </button>
                 </form>
@@ -83,5 +85,3 @@ const Login: React.FC = () => {
         </div>
     )
 }
-
-export default Login

@@ -26,7 +26,7 @@ function Landing(){
             <FiArrowRight size={26} color ="rgba(0, 0, 0, 0.6)"/>
           </Link>
 
-          <Link to="/restrictArea" className="restrict-area">
+          <Link to="/login" className="restrict-area">
               Acesso Restrito
           </Link>
   

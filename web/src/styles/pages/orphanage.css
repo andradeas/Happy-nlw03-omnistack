@@ -172,6 +172,10 @@
   margin-right: 16px;
 }
 
+a { 
+  text-decoration: none;
+}
+
 .orphanage-details .orphanage-details-content button.contact-button:hover {
   background: #36CF82;
 }
